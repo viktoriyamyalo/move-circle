@@ -47,6 +47,57 @@ class CircleView extends Component {
         this._updatePosition();
     }
 
+    _highlight = () => {
+        this.circle && this.circle.setNativeProps({
+            backgroundColor: CIRCLE_HIGHLIGHT_COLOR
+        })
+    }
+
+    _unHighlight = () => {
+        this.circle && this.circle.setNativeProps({
+            backgroundColor: CIRCLE_COLOR
+        })
+    }
+
+    _updatePosition = () => {
+        this.circle && this.circle.setNativeProps(this._circleStyles);
+    }
+
+    _handleStartShouldSetPanResponder = (event, gestureState) => {
+        return true;
+    }
+
+    _handleMoveShouldSetPanResponder = (event, gestureState) => {
+        return true;
+    }
+
+    _handlePanResponderGrant = (event, gestureState) => {
+        this._highlight();
+    }
+
+    _handlePanResponderMove = (event, gestureState) => {
+        this.setState({
+            stateID: gestureState.stateID,
+            moveX: gestureState.moveX,
+            moveY: gestureState.moveY,
+            x0: gestureState.x0,
+            y0: gestureState.y0,
+            dx: gestureState.dx,
+            dy: gestureState.dy,
+            vx: gestureState.vx,
+            vy: gestureState.vy,
+            numberActiveTouches: gestureState.numberActiveTouches
+        });
+        this._circleStyles.style.left = this._previousLeft + gestureState.dx;
+        this._circleStyles.style.top = this._previousTop + gestureState.dy;
+    }
+
+    _handlePanResponderEnd = (event, gestureState) => {
+        this._unHighlight();
+        this._previousLeft += gestureState.dx;
+        this._previousTop += gestureState.dy''
+    }
+
     render() {
         const { numberActiveTouches, dx, dy, vx, vy } = this.state;
         return (
@@ -70,6 +121,21 @@ class CircleView extends Component {
     }
 }
 
+const styles = StyleSheet.create({
+    circle: {
+        width: CIRCLE_SIZE,
+        height: CIRCLE_SIZE,
+        borderRadius: CIRCLE_SIZE/2,
+        backgroundCoor: CIRCLE_COLOR,
+        position: "absolute",
+        top: 0,
+        left: 0
+    },
+    container: {
+        flex: 1,
+        paddingTop: 64
+    }
+});
 CircleView.propTypes = {};
 
 export default CircleView;
