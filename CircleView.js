@@ -35,7 +35,7 @@ class CircleView extends Component {
             onPanResponderTerminate: this._handlePanResponderEnd
         });
         this._previousLeft = 20;
-        this._previousTop = 84;
+        this._previousTop = 184;
         this._circleStyles = {
             style: {
                 left: this._previousLeft,
@@ -90,12 +90,13 @@ class CircleView extends Component {
         });
         this._circleStyles.style.left = this._previousLeft + gestureState.dx;
         this._circleStyles.style.top = this._previousTop + gestureState.dy;
+        this._updatePosition();
     }
 
     _handlePanResponderEnd = (event, gestureState) => {
         this._unHighlight();
         this._previousLeft += gestureState.dx;
-        this._previousTop += gestureState.dy''
+        this._previousTop += gestureState.dy;
     }
 
     render() {
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
         width: CIRCLE_SIZE,
         height: CIRCLE_SIZE,
         borderRadius: CIRCLE_SIZE/2,
-        backgroundCoor: CIRCLE_COLOR,
+        backgroundColor: CIRCLE_COLOR,
         position: "absolute",
         top: 0,
         left: 0
